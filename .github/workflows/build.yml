@@ -46,7 +46,6 @@ jobs:
         cp CleanerServerService.kt android/app/src/main/java/com/samsung/cleaner/pro/
         cp CleanerBridge.kt android/app/src/main/java/com/samsung/cleaner/pro/
         
-        # إضافة التبعيات
         cd android/app
         sed -i 's|dependencies {|dependencies {\n    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"\n    implementation "androidx.core:core-ktx:1.12.0"|' build.gradle
         cd ../..
