@@ -1,0 +1,12 @@
+{
+  "name": "samsung-cleaner-pro",
+  "version": "2.0.1",
+  "description": "تطبيق احترافي لتنظيف وتحسين أداء Samsung Galaxy A04e",
+  "main": "index.html",
+  "scripts": {
+    "build": "npx cap sync android && cd android && ./gradlew assembleDebug",
+    "serve": "npx http-server -p 8080"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}
