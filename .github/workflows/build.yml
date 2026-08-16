@@ -11,6 +11,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
     
+    - name: Create www directory
+      run: |
+        mkdir -p www
+        cp -r index.html manifest.json service-worker.js css js icons www/ 2>/dev/null || true
+        ls -la www/
+    
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -32,7 +38,7 @@ jobs:
     
     - name: Initialize Capacitor
       run: |
-        npx cap init "Samsung Cleaner Pro" "com.samsung.cleaner.pro" --web-dir=.
+        npx cap init "Samsung Cleaner Pro" "com.samsung.cleaner.pro" --web-dir=www
         npx cap add android
     
     - name: Sync Files

@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>منظف سامسونج برو - Galaxy A04e</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --danger: #f5576c;
+            --success: #43e97b;
+            --warning: #fa709a;
+            --info: #4facfe;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gradient: linear-gradient(135deg, #667eea, #764ba2);
+            --gradient-danger: linear-gradient(135deg, #f093fb, #f5576c);
+            --gradient-success: linear-gradient(135deg, #43e97b, #38f9d7);
+            --gradient-info: linear-gradient(135deg, #4facfe, #00f2fe);
+            --shadow: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-hover: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark);
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* تأثيرات الجسيمات */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            padding: 15px;
+        }
+
+        /* الهيدر */
+        .header {
+            background: var(--gradient);
+            border-radius: 25px;
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .device-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* بطاقات الإحصائيات */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 18px;
+            color: white;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .stat-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 5px;
+        }
+
+        /* شريط التقدم الدائري */
+        .circular-progress {
+            width: 120px;
+            height: 120px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .circular-progress svg {
+            transform: rotate(-90deg);
+        }
+
+        .circular-progress circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+        }
+
+        .circle-bg {
+            stroke: rgba(255,255,255,0.1);
+        }
+
+        .circle-fg {
+            stroke: url(#gradient);
+            stroke-dasharray: 339.292;
+            stroke-dashoffset: 100;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .progress-text .percentage {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .progress-text .label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* أدوات التنظيف */
+        .cleaner-list {
+            display: grid;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .cleaner-item {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cleaner-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: right 0.5s;
+        }
+
+        .cleaner-item:hover::before {
+            right: 100%;
+        }
+
+        .cleaner-item:active {
+            transform: scale(0.98);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .cleaner-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .cleaner-icon::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 18px;
+            background: inherit;
+            filter: blur(10px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .cleaner-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cleaner-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .cleaner-desc {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .cleaner-status {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .status-warning {
+            background: rgba(250,112,154,0.2);
+            color: #fa709a;
+        }
+
+        .status-success {
+            background: rgba(67,233,123,0.2);
+            color: #43e97b;
+        }
+
+        .status-info {
+            background: rgba(79,172,254,0.2);
+            color: #4facfe;
+        }
+
+        .clean-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .clean-btn:active {
+            transform: scale(0.9);
+            box-shadow: 0 0 30px rgba(102,126,234,0.5);
+        }
+
+        /* زر التنظيف الشامل */
+        .master-clean-btn {
+            width: 100%;
+            background: var(--gradient-danger);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(245,87,108,0.3);
+            transition: all 0.3s;
+        }
+
+        .master-clean-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .master-clean-btn:hover::before {
+            opacity: 1;
+        }
+
+        .master-clean-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 5px 20px rgba(245,87,108,0.5);
+        }
+
+        .btn-shine {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        /* رسالة التنبيه */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* تأثير التنظيف */
+        .cleaning-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #43e97b;
+            border-radius: 50%;
+            animation: spark-animation 1s ease-out forwards;
+        }
+
+        @keyframes spark-animation {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            100% { transform: scale(1) rotate(180deg); opacity: 0; }
+        }
+
+        /* قائمة جانبية */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100%;
+            background: rgba(26,26,46,0.98);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 5px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* لودينج */
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- جسيمات الخلفية -->
+        <div class="particles" id="particles"></div>
+        
+        <!-- القائمة الجانبية -->
+        <div class="side-menu" id="sideMenu">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 50px;">⚡</div>
+                <div style="color: white; font-weight: bold; font-size: 18px; margin-top: 10px;">Samsung Cleaner Pro</div>
+                <div style="color: rgba(255,255,255,0.6); font-size: 12px;">الإصدار 2.0</div>
+            </div>
+            <div class="menu-item" onclick="showAllStats()">📊 إحصائيات متقدمة</div>
+            <div class="menu-item" onclick="scheduleClean()">⏰ جدولة التنظيف</div>
+            <div class="menu-item" onclick="showHistory()">📜 سجل التنظيف</div>
+            <div class="menu-item" onclick="exportReport()">📄 تصدير تقرير</div>
+            <div class="menu-item" onclick="checkUpdates()">🔄 التحقق من التحديثات</div>
+            <div class="menu-item" onclick="aboutApp()">ℹ️ حول التطبيق</div>
+        </div>
+        <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+        
+        <!-- المحتوى الرئيسي -->
+        <div class="content">
+            <!-- هيدر -->
+            <div class="header">
+                <div style="position: relative; z-index: 1;">
+                    <div class="header-icon">🔧</div>
+                    <h1>منظف سامسونج برو</h1>
+                    <div class="device-badge">
+                        📱 Samsung Galaxy A04e | Android 12
+                    </div>
+                    <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px;">
+                        <button onclick="toggleMenu()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 13px;">
+                            ☰ القائمة
+                        </button>
+                        <button onclick="refreshAll()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 13px;">
+                            🔄 تحديث
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المؤشر الدائري -->
+            <div class="circular-progress">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="circle-bg" cx="60" cy="60" r="54"></circle>
+                    <circle class="circle-fg" id="progressCircle" cx="60" cy="60" r="54"></circle>
+                </svg>
+                <div class="progress-text">
+                    <div class="percentage" id="percentage">35%</div>
+                    <div class="label">مستخدم</div>
+                </div>
+            </div>
+
+            <!-- الإحصائيات -->
+            <div class="stats-container">
+                <div class="stat-card" onclick="showDetail('storage')">
+                    <div class="stat-icon">💾</div>
+                    <div class="stat-value" id="freeSpace">24.5 GB</div>
+                    <div class="stat-label">مساحة متاحة</div>
+                </div>
+                <div class="stat-card" onclick="showDetail('junk')">
+                    <div class="stat-icon">🗑️</div>
+                    <div class="stat-value" id="junkSpace">1.2 GB</div>
+                    <div class="stat-label">ملفات مهملة</div>
+                </div>
+                <div class="stat-card" onclick="showDetail('ram')">
+                    <div class="stat-icon">🧠</div>
+                    <div class="stat-value" id="ramUsage">62%</div>
+                    <div class="stat-label">استخدام الرام</div>
+                </div>
+                <div class="stat-card" onclick="showDetail('battery')">
+                    <div class="stat-icon">🔋</div>
+                    <div class="stat-value" id="batteryLevel">85%</div>
+                    <div class="stat-label">البطارية</div>
+                </div>
+            </div>
+
+            <!-- أدوات التنظيف السبعة -->
+            <div class="cleaner-list">
+                <!-- 1. منظف الكاش -->
+                <div class="cleaner-item" id="item1">
+                    <div class="cleaner-icon" style="background: var(--gradient);">🗑️</div>
+                    <div class="cleaner-info">
+                        <div class="cleaner-name">منظف ذاكرة التخزين المؤقت</div>
+                        <div class="cleaner-desc" id="cacheInfo">356 MB قابلة للتنظيف</div>
+                    </div>
+                    <span class="cleaner-status status-warning" id="cacheStatus">⏳</span>
+                    <button class="clean-btn" onclick="cleanCache()">▶</button>
+                </div>
+
+                <!-- 2. منظف الملفات المهملة -->
+                <div class="cleaner-item" id="item2">
+                    <div class="cleaner-icon" style="background: var(--gradient-danger);">♻️</div>
+                    <div class="cleaner-info">
+                        <div class="cleaner-name">منظف الملفات المهملة</div>
+                        <div class="cleaner-desc" id="junkInfo">512 MB ملفات غير ضرورية</div>
+                    </div>
+                    <span class="cleaner-status status-warning" id="junkStatus">⏳</span>
+                    <button class="clean-btn" onclick="cleanJunk()">▶</button>
+                </div>
+
+                <!-- 3. معزز الذاكرة -->
+                <div class="cleaner-item" id="item3">
+                    <div class="cleaner-icon" style="background: var(--gradient-info);">💾</div>
+                    <div class="cleaner-info">
+                        <div class="cleaner-name">معزز الذاكرة RAM</div>
+                        <div class="cleaner-desc" id="ramInfo">1.8 GB / 3 GB مستخدم</div>
+                    </div>
+                    <span class="cleaner-status status-info" id="ramStatus">⏳</span>
+                    <button class="clean-btn" onclick="boostRAM()">▶</button>
+                </div>
+
+                <!-- 4. مدير التطبيقات -->
+                <div class="cleaner-item" id="item4">
+                    <div class="cleaner-icon" style="background: var(--gradient-success);">📱</div>
+                    <div class="cleaner-info">
+                        <div class="cleaner-name">مدير التطبيقات الذكي</div>
+                        <div class="cleaner-desc" id="appsInfo">8 تطبيقات خاملة</div>
+                    </div>
+                    <span class="cleaner-status status-warning" id="appsStatus">⏳</span>
+                    <button class="clean-btn" onclick="manageApps()">▶</button>
+                </div>
+
+                <!-- 5. منظف الإشعارات -->
+                <div class="cleaner-item" id="item5">
+                    <div class="cleaner-icon" style="background: var(--warning);">🔔</div>
+                    <div class="cleaner-info">
+                        <div class="cleaner-name">منظف الإشعارات</div>
+                        <div class="cleaner-desc" id="notifInfo">12 إشعار غير مهم</div>
+                    </div>
+                    <span class="cleaner-status status-warning" id="notifStatus">⏳</span>
+                    <button class="clean-btn" onclick="cleanNotifications()">▶</button>
+                </div>
+
+                <!-- 6. موفر الطاقة -->
+                <div class="cleaner-item" id="item6">
+                    <div class="cleaner-icon" style="background: linear-gradient(135deg, #30cfd0, #330867);">🔋</div>
+                    <div class="cleaner-info">
+                        <div class="cleaner-name">موفر الطاقة الذكي</div>
+                        <div class="cleaner-desc" id="batteryInfo">الوضع متوازن</div>
+                    </div>
+                    <span class="cleaner-status status-info" id="batteryStatus">⏳</span>
+                    <button class="clean-btn" onclick="optimizeBattery()">▶</button>
+                </div>
+
+                <!-- 7. محلل النظام -->
+                <div class="cleaner-item" id="item7">
+                    <div class="cleaner-icon" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">⚙️</div>
+                    <div class="cleaner-info">
+                        <div class="cleaner-name">محلل النظام المتقدم</div>
+                        <div class="cleaner-desc" id="systemInfo">3 مشكلات مكتشفة</div>
+                    </div>
+                    <span class="cleaner-status status-warning" id="systemStatus">⏳</span>
+                    <button class="clean-btn" onclick="analyzeSystem()">▶</button>
+                </div>
+            </div>
+
+            <!-- زر التنظيف الشامل -->
+            <button class="master-clean-btn" onclick="masterClean()">
+                <span class="btn-shine"></span>
+                🚀 تنظيف شامل فائق السرعة
+            </button>
+        </div>
+
+        <!-- تأثيرات التنظيف -->
+        <div class="cleaning-effect" id="cleaningEffect"></div>
+        
+        <!-- رسالة التنبيه -->
+        <div class="toast" id="toast"></div>
+    </div>
+
+    <script>
+        // ============================================
+        // نظام الجسيمات المتحركة
+        // ============================================
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 4 + 2) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // ============================================
+        // نظام الإشعارات المحسن
+        // ============================================
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = document.getElementById('toast');
+            const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+            toast.textContent = `${icons[type]} ${message}`;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), duration);
+        }
+
+        // ============================================
+        // تأثيرات التنظيف المرئية
+        // ============================================
+        function createCleaningEffect(x, y) {
+            const container = document.getElementById('cleaningEffect');
+            for (let i = 0; i < 20; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'spark';
+                spark.style.left = x + 'px';
+                spark.style.top = y + 'px';
+                spark.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                spark.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+                container.appendChild(spark);
+                setTimeout(() => spark.remove(), 1000);
+            }
+        }
+
+        // ============================================
+        // تحديث المؤشر الدائري
+        // ============================================
+        function updateProgress(percent) {
+            const circle = document.getElementById('progressCircle');
+            const circumference = 2 * Math.PI * 54;
+            const offset = circumference - (percent / 100) * circumference;
+            circle.style.strokeDasharray = circumference;
+            circle.style.strokeDashoffset = offset;
+            document.getElementById('percentage').textContent = percent + '%';
+        }
+
+        // ============================================
+        // القائمة الجانبية
+        // ============================================
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('menuOverlay');
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // ============================================
+        // دوال التنظيف المتقدمة
+        // ============================================
+        async function simulateCleaning(elementId, statusId, infoId, successMsg, delay = 2000) {
+            const element = document.getElementById(elementId);
+            const status = document.getElementById(statusId);
+            const info = document.getElementById(infoId);
+            
+            // تأثير التنظيف
+            const rect = element.getBoundingClientRect();
+            createCleaningEffect(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            
+            // تحديث الحالة
+            status.textContent = '🔄';
+            status.className = 'cleaner-status status-info';
+            element.style.transform = 'scale(0.98)';
+            
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    status.textContent = '✅';
+                    status.className = 'cleaner-status status-success';
+                    info.textContent = successMsg;
+                    element.style.transform = 'scale(1)';
+                    resolve();
+                }, delay);
+            });
+        }
+
+        async function cleanCache() {
+            showToast('جاري تنظيف ذاكرة التخزين المؤقت...', 'info');
+            await simulateCleaning('item1', 'cacheStatus', 'cacheInfo', '0 MB ✓ تم التنظيف');
+            showToast('تم تنظيف ذاكرة التخزين المؤقت بنجاح!', 'success');
+            updateAllStats();
+        }
+
+        async function cleanJunk() {
+            showToast('جاري حذف الملفات المهملة...', 'info');
+            await simulateCleaning('item2', 'junkStatus', 'junkInfo', '0 MB ✓ تم الحذف');
+            showToast('تم حذف الملفات المهملة بنجاح!', 'success');
+            updateAllStats();
+        }
+
+        async function boostRAM() {
+            showToast('جاري تحرير الذاكرة...', 'info');
+            await simulateCleaning('item3', 'ramStatus', 'ramInfo', '1.1 GB / 3 GB ✓ تم التحسين');
+            showToast('تم تحرير الذاكرة بنجاح!', 'success');
+            updateAllStats();
+        }
+
+        async function manageApps() {
+            showToast('جاري إدارة التطبيقات...', 'info');
+            await simulateCleaning('item4', 'appsStatus', 'appsInfo', '0 تطبيقات خاملة ✓');
+            showToast('تم إيقاف التطبيقات الخاملة!', 'success');
+        }
+
+        async function cleanNotifications() {
+            showToast('جاري تنظيف الإشعارات...', 'info');
+            await simulateCleaning('item5', 'notifStatus', 'notifInfo', '0 إشعارات ✓');
+            showToast('تم تنظيف الإشعارات!', 'success');
+        }
+
+        async function optimizeBattery() {
+            showToast('جاري تحسين البطارية...', 'info');
+            await simulateCleaning('item6', 'batteryStatus', 'batteryInfo', 'موفر طاقة فائق ✓');
+            showToast('تم تحسين استهلاك البطارية!', 'success');
+        }
+
+        async function analyzeSystem() {
+            showToast('جاري تحليل النظام...', 'info');
+            await simulateCleaning('item7', 'systemStatus', 'systemInfo', 'النظام سليم 100% ✓');
+            showToast('تم إصلاح جميع مشكلات النظام!', 'success');
+        }
+
+        // ============================================
+        // التنظيف الشامل المتقدم
+        // ============================================
+        async function masterClean() {
+            showToast('🚀 بدء التنظيف الشامل المتقدم...', 'info', 4000);
+            
+            const cleaners = [
+                { name: 'ذاكرة التخزين المؤقت', fn: cleanCache },
+                { name: 'الملفات المهملة', fn: cleanJunk },
+                { name: 'الذاكرة RAM', fn: boostRAM },
+                { name: 'التطبيقات', fn: manageApps },
+                { name: 'الإشعارات', fn: cleanNotifications },
+                { name: 'البطارية', fn: optimizeBattery },
+                { name: 'النظام', fn: analyzeSystem }
+            ];
+            
+            for (const cleaner of cleaners) {
+                showToast(`⚡ ${cleaner.name}...`, 'info', 1000);
+                await cleaner.fn();
+                await new Promise(r => setTimeout(r, 500));
+            }
+            
+            // تحديث جميع الإحصائيات
+            updateAllStats();
+            updateProgress(15);
+            
+            // عرض رسالة النجاح مع تأثيرات
+            showToast('🎉 تم التنظيف الشامل! الهاتف بأفضل أداء ممكن', 'success', 5000);
+            
+            // تأثير احتفالي
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createCleaningEffect(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight
+                    );
+                }, i * 200);
+            }
+        }
+
+        // ============================================
+        // تحديث الإحصائيات
+        // ============================================
+        function updateAllStats() {
+            document.getElementById('freeSpace').textContent = '28.5 GB';
+            document.getElementById('junkSpace').textContent = '0.1 GB';
+            document.getElementById('ramUsage').textContent = '35%';
+            document.getElementById('batteryLevel').textContent = '92%';
+            updateProgress(18);
+        }
+
+        // ============================================
+        // وظائف إضافية
+        // ============================================
+        function showDetail(type) {
+            const details = {
+                storage: '💾 المساحة الكلية: 32 GB\nالمستخدم: 3.5 GB\nالمتاح: 28.5 GB',
+                junk: '🗑️ ملفات مؤقتة: 0.1 GB\nملفات APK: 0 GB\nمخلفات: 0 GB',
+                ram: '🧠 الإجمالي: 3 GB\nمتاح: 1.9 GB\nمحسن: نعم',
+                battery: '🔋 السعة: 5000 mAh\nالصحة: 95%\nالدورات: 342'
+            };
+            showToast(details[type], 'info', 4000);
+        }
+
+        function refreshAll() {
+            showToast('🔄 جاري تحديث البيانات...', 'info');
+            setTimeout(() => {
+                updateAllStats();
+                showToast('✅ تم تحديث البيانات!', 'success');
+            }, 1500);
+        }
+
+        function showAllStats() {
+            toggleMenu();
+            showToast('📊 جاري تحميل الإحصائيات المتقدمة...', 'info', 2000);
+        }
+
+        function scheduleClean() {
+            toggleMenu();
+            showToast('⏰ سيتم التنظيف التلقائي كل 24 ساعة', 'success');
+        }
+
+        function showHistory() {
+            toggleMenu();
+            showToast('📜 آخر تنظيف: اليوم 10:30 صباحاً', 'info');
+        }
+
+        function exportReport() {
+            toggleMenu();
+            showToast('📄 جاري تصدير التقرير...', 'info');
+            setTimeout(() => showToast('✅ تم حفظ التقرير!', 'success'), 1500);
+        }
+
+        function checkUpdates() {
+            toggleMenu();
+            showToast('🔄 لديك أحدث إصدار v2.0.1', 'success');
+        }
+
+        function aboutApp() {
+            toggleMenu();
+            showToast('ℹ️ Samsung Cleaner Pro v2.0\nGalaxy A04e Optimized', 'info', 4000);
+        }
+
+        // ============================================
+        // التهيئة الأولية
+        // ============================================
+        function init() {
+            createParticles();
+            updateProgress(35);
+            showToast('📱 مرحباً! هاتفك جاهز للتنظيف', 'info', 3000);
+            
+            // تحديث دوري
+            setInterval(() => {
+                const randomChange = Math.random() * 2 - 1;
+                updateProgress(35 + randomChange);
+            }, 30000);
+        }
+
+        // بدء التطبيق
+        document.addEventListener('DOMContentLoaded', init);
+
+        // معالج النقر للتأثيرات
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.cleaner-item') || e.target.closest('.master-clean-btn')) {
+                createCleaningEffect(e.clientX, e.clientY);
+            }
+        });
+    </script>
+</body>
+</html>
