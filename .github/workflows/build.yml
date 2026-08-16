@@ -11,17 +11,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
     
-    - name: Create www directory
-      run: |
-        mkdir -p www
-        cp -r index.html manifest.json service-worker.js css js icons www/ 2>/dev/null || true
-        ls -la www/
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-    
     - name: Setup Java
       uses: actions/setup-java@v4
       with:
@@ -31,27 +20,30 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
     
-    - name: Install Capacitor
-      run: |
-        npm init -y
-        npm install @capacitor/core @capacitor/cli @capacitor/android
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
     
-    - name: Initialize Capacitor
-      run: |
-        npx cap init "Samsung Cleaner Pro" "com.samsung.cleaner.pro" --web-dir=www
-        npx cap add android
+    - name: Install cordova
+      run: npm install -g cordova
     
-    - name: Sync Files
-      run: npx cap sync android
+    - name: Create Cordova project
+      run: |
+        cordova create app com.samsung.cleaner.pro "Samsung Cleaner Pro"
+        cd app
+        cordova platform add android
+        cp ../index.html www/
+        cp ../manifest.json www/ 2>/dev/null || true
+        cp ../service-worker.js www/ 2>/dev/null || true
     
     - name: Build APK
       run: |
-        cd android
-        chmod +x gradlew
-        ./gradlew assembleDebug
+        cd app
+        cordova build android
     
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: app-debug
-        path: android/app/build/outputs/apk/debug/app-debug.apk
+        path: app/platforms/android/app/build/outputs/apk/debug/app-debug.apk
