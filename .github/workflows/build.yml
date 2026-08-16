@@ -43,7 +43,6 @@ jobs:
     - name: Add Storage Permissions
       run: |
         cd android/app/src/main
-        # إضافة الصلاحيات قبل </manifest>
         sed -i 's|</manifest>|<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />\n    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />\n</manifest>|' AndroidManifest.xml
         cd ../../..
     
