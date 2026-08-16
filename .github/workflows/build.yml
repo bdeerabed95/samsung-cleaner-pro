@@ -30,7 +30,7 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
     
-    - name: Install Capacitor 6 only
+    - name: Install Capacitor 6
       run: |
         npm init -y
         npm install @capacitor/core@6.0.0 @capacitor/cli@6.0.0 @capacitor/android@6.0.0
@@ -40,10 +40,23 @@ jobs:
         npx cap init "Samsung Cleaner Pro" "com.samsung.cleaner.pro" --web-dir=www
         npx cap add android
     
-    - name: Add Storage Permissions
+    - name: Add Kotlin Files
+      run: |
+        mkdir -p android/app/src/main/java/com/samsung/cleaner/pro
+        cp CleanerServerService.kt android/app/src/main/java/com/samsung/cleaner/pro/
+        cp CleanerBridge.kt android/app/src/main/java/com/samsung/cleaner/pro/
+        
+        # إضافة التبعيات
+        cd android/app
+        sed -i 's|dependencies {|dependencies {\n    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"\n    implementation "androidx.core:core-ktx:1.12.0"|' build.gradle
+        cd ../..
+    
+    - name: Add Permissions and Service
       run: |
         cd android/app/src/main
-        sed -i 's|</manifest>|<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />\n    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />\n</manifest>|' AndroidManifest.xml
+        sed -i 's|</manifest>|<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />\n    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />\n    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />\n    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />\n</manifest>|' AndroidManifest.xml
+        
+        sed -i 's|</application>|<service android:name=".CleanerServerService" android:enabled="true" android:exported="false" android:foregroundServiceType="dataSync" />\n    </application>|' AndroidManifest.xml
         cd ../../..
     
     - name: Sync Files
