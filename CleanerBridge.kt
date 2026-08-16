@@ -33,13 +33,6 @@ class CleanerBridge {
             startService(context, intent)
         }
         
-        fun stopService(context: Context) {
-            val intent = Intent(context, CleanerServerService::class.java).apply {
-                action = CleanerServerService.ACTION_STOP_SERVICE
-            }
-            startService(context, intent)
-        }
-        
         private fun startService(context: Context, intent: Intent) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(intent)
